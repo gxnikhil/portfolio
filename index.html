@@ -2326,4 +2326,72 @@ document.addEventListener('DOMContentLoaded', () => {
   initDynamicCurrentTime();
 });
 </script>
+<script>
+/**
+ * Custom Page Transition for External 'About' Link
+ * Plays the preloader animation before redirecting.
+ */
+(function() {
+  var TARGET_URL = 'https://gxnikhil.github.io/about/';
+
+  function doRedirect(url) {
+    window.location.href = url;
+  }
+
+  function runAboutTransition(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var targetUrl = TARGET_URL;
+    var redirected = false;
+
+    // Safety fallback: redirect after 2s no matter what
+    var fallbackTimer = setTimeout(function() {
+      if (!redirected) { redirected = true; doRedirect(targetUrl); }
+    }, 2000);
+
+    try {
+      var preloader    = document.querySelector('[data-preloader]');
+      var preloaderBg  = document.querySelector('[data-preloader-bg]');
+      var preloaderR   = document.querySelector('[data-preloader-r]');
+      var preloaderLogo = document.querySelector('[data-preloader-logo]');
+      var preloaderK   = document.querySelector('[data-preloader-k]');
+
+      if (preloader && typeof gsap !== 'undefined') {
+        gsap.set(preloader,    { display: 'flex', visibility: 'visible', opacity: 1, zIndex: 9999 });
+        gsap.set(preloaderBg,  { scaleY: 0, transformOrigin: 'bottom' });
+        gsap.set([preloaderR, preloaderLogo, preloaderK], { opacity: 0, y: 50 });
+
+        gsap.timeline({
+          onComplete: function() {
+            clearTimeout(fallbackTimer);
+            if (!redirected) { redirected = true; doRedirect(targetUrl); }
+          }
+        })
+        .to(preloaderBg, { scaleY: 1, duration: 0.8, ease: 'power4.inOut' })
+        .to([preloaderR, preloaderLogo, preloaderK], { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out' }, '-=0.3');
+      } else {
+        clearTimeout(fallbackTimer);
+        if (!redirected) { redirected = true; doRedirect(targetUrl); }
+      }
+    } catch(err) {
+      clearTimeout(fallbackTimer);
+      if (!redirected) { redirected = true; doRedirect(targetUrl); }
+    }
+  }
+
+  function attachListeners() {
+    var links = document.querySelectorAll('[data-about-link]');
+    links.forEach(function(link) {
+      link.addEventListener('click', runAboutTransition, true);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachListeners);
+  } else {
+    attachListeners();
+  }
+})();
+</script>
 </body></html>
