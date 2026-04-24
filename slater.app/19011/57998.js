@@ -17,7 +17,7 @@ window.RK.modules = window.RK.modules || {};
   /********** CONFIG **********/
   const CONFIG = {
     bgm: {
-      src: "https://raviklaassens.b-cdn.net/Website/Track/RK_track.mp3",
+      src: "soundforbgm.mp3",
       volume: 0.24,
       loop: true
     },
@@ -270,6 +270,16 @@ window.RK.modules = window.RK.modules || {};
 
     root.querySelectorAll('[data-sound="mute"]').forEach((el) => {
       el.classList.toggle("is-muted", isMuted);
+    });
+    // Update text labels
+    root.querySelectorAll("[data-sound-label]").forEach((el) => {
+      const textEl = el.hasAttribute("data-btn-text") ? el : el.querySelector("[data-btn-text]");
+      if (textEl) {
+        textEl.textContent = isMuted ? "Play" : "Pause";
+      }
+      if (el.hasAttribute("data-text")) {
+        el.setAttribute("data-text", isMuted ? "Play" : "Pause");
+      }
     });
   }
 
