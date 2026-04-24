@@ -1,9 +1,9 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/www.raviklaassens.com/index.html" },
-    { "source": "/about", "destination": "/www.raviklaassens.com/about.html" },
-    { "source": "/for-agencies", "destination": "/www.raviklaassens.com/for-agencies.html" },
-    { "source": "/for-brands", "destination": "/www.raviklaassens.com/for-brands.html" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/for-agencies", "destination": "/for-agencies.html" },
+    { "source": "/for-brands", "destination": "/for-brands.html" }
   ],
   "cleanUrls": false,
   "trailingSlash": false
